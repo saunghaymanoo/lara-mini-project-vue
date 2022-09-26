@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex mt-4">
-        <select class="form-select ms-auto mx-2 w-25" v-model="selectedCategory" aria-label="Default select example" @change="changeSubcategory">
+        <select v-if="categories.length != 0" class="form-select ms-auto mx-2 w-25" v-model="selectedCategory" aria-label="Default select example" @change="changeSubcategory">
             <option value="0">Select Category</option>
             <option 
                 v-for="category in categories" 
@@ -10,7 +10,7 @@
             {{category.title}}
             </option>
         </select>
-        <select class="form-select mx-2 w-25" v-model="selectedSubCategory" aria-label="Default select example" @change="search">
+        <select v-if="categories.length != 0" class="form-select mx-2 w-25" v-model="selectedSubCategory" aria-label="Default select example" @change="search">
             <option value="0">Select SubCategory</option>
             <option 
                 v-for="subcategory in subcategories" 
@@ -40,6 +40,7 @@ import debounce from 'lodash/debounce'
         props: {
             categories: {
                 type: Array, 
+                default: []
             },
             subcategories: {
                 type: Array,

@@ -8,12 +8,12 @@
             <div class="card w-md-75">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
-                        <h3>Create Item</h3>
+                        <h3>Edit Item</h3>
                         <router-link to="/item-list">
                             <i class="bi bi-list" style="font-size:32px;"></i>
                         </router-link>
                     </div>
-                    <form @submit.prevent="storeItem" ref="createItemForm" class="row">
+                    <form @submit.prevent="storeItem" ref="editItemForm" class="row">
                         <div class="col-6">
                             <Input name="name" type="text" placeholder="" label="Enter Item Name:" :isLogin="false" :errors="errors"/>
                             <Input name="code" type="text" placeholder="Example: s-0001" label="Enter Item Code:" :isLogin="false" :errors="errors"/>
@@ -71,6 +71,7 @@ import { mapGetters } from 'vuex'
                 categories:[],
                 subcategories:[],
                 subcategory_id: 0,
+                item:{},
                 breadcrumbs: [
                     'home','item create'
                     ]
@@ -118,10 +119,20 @@ import { mapGetters } from 'vuex'
                 .catch(err => console.log(err));
             },
             getSubcategory(id){
-                console.log(id);
+                // console.log(id);
             },
-            storeItem(){
-                let formData = new FormData(this.$refs.createItemForm);
+            fetchItem(id) {
+                // this.isLoading = true;
+                axios.get(this.getUrl('/items/')+id)
+                .then(res => {
+                    // console.log(res.data)
+                    this.item = res.data.data;
+                    console.log(this.item);
+                })
+                .catch(err => this.showToast('error',err.message))
+            },
+            updateItem(){
+                let formData = new FormData(this.$refs.editItemForm);
                 // console.log(formData);
                 axios.post(this.getUrl('/items'),formData)
                 .then(res => {
@@ -146,6 +157,7 @@ import { mapGetters } from 'vuex'
         mounted () {
             this.fetchCategories();
             this.fetchSubcategories();
+            this.fetchItem(this.$route.params.id)
         },
     }
 </script>

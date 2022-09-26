@@ -1,7 +1,7 @@
 <template>
     <div class="">
         <label :for="name" class="form-label">{{label}}</label> <br>
-        <input :type="type" :name="name" :placeholder="placeholder" :class="{'login-input':isLogin,'is-invalid':errors[name],'form-control': !isLogin}"/>
+        <input :type="type" :name="name" :value="value" :placeholder="placeholder" :class="{'login-input':isLogin,'is-invalid':errors[name],'form-control': !isLogin}"/>
         <div :class="{'invalid-feedback':errors[name]}" v-if="errors[name]">{{errors[name][0]}}</div>
     </div>
 </template>
@@ -30,6 +30,9 @@
                 default: false
             },
             errors:{
+            },
+            value:{
+                default:''
             }
         },
         

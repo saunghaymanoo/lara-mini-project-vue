@@ -1,11 +1,11 @@
 <template>
    <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-primary" id="sidenav-main">
 
-        <div class="sidenav-header">
-            <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-            <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/material-dashboard/pages/dashboard " target="_blank">
-            <img src="@/assets/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
-            <span class="ms-1 font-weight-bold text-white">Material Dashboard 2</span>
+        <div class="sidenav-header d-flex align-items-center">
+            <i class="bi bi-bag text-white ms-4" style="font-size:20px"></i>
+            <a class="navbar-brand m-0" href="#" target="">
+            <!-- <img src="@/assets/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo"> -->
+            <span class="ms-1 font-weight-bold text-white">My Shop</span>
             </a>
         </div>
 
@@ -16,7 +16,7 @@
             <ul class="navbar-nav">
             
             <li class="nav-item">
-            <a class="nav-link text-white " href="./dashboard.html">
+            <a class="nav-link text-white " href="#">
                 
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                     <i class="material-icons opacity-10">dashboard</i>
@@ -26,20 +26,20 @@
             </a>
             </li>
 
-            
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Items Management</h6>
+                </li>
             <li class="nav-item">
-            <a class="nav-link text-white " href="./tables.html">
+            <router-link class="nav-link text-white " to="/item-create">
                 
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                    <i class="material-icons opacity-10">table_view</i>
+                    <i class="material-icons opacity-10">add_circle_outline</i>
                 </div>
                 
-                <span class="nav-link-text ms-1">Tables</span>
-            </a>
+                <span class="nav-link-text ms-1">Create Item</span>
+            </router-link>
             </li>
-
-            
-            <li class="nav-item">
+            <!-- <li class="nav-item">
             <a class="nav-link text-white " href="./billing.html">
                 
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -48,6 +48,16 @@
                 
                 <span class="nav-link-text ms-1">Billing</span>
             </a>
+            </li> -->
+            <li class="nav-item">
+            <router-link class="nav-link text-white " to="/item-list">
+                
+                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i class="material-icons opacity-10">format_list_bulleted</i>
+                </div>
+                
+                <span class="nav-link-text ms-1">Item List</span>
+            </router-link>
             </li>
 
             

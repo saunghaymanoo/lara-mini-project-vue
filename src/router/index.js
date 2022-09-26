@@ -5,6 +5,9 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import DashboardView from '../views/DashboardView'
+import DashboardItemCreateView from '../views/DashboardItemCreateView'
+import DashboardItemListView from '../views/DashboardItemListView'
+import DashboardItemEditView from '../views/DashboardItemEditView'
 
 Vue.use(VueRouter)
 function needAuth(to,from,next){
@@ -37,10 +40,29 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
   },
+  //item create = dashboard
   {
     path: '/dashboard',
     name: 'dashboard',
     component: DashboardView,
+    beforeEnter: needAuth
+  },
+  {
+    path: '/item-create',
+    name: 'item.create',
+    component: DashboardItemCreateView,
+    beforeEnter: needAuth
+  },
+  {
+    path: '/item-list',
+    name: 'item.list',
+    component: DashboardItemListView,
+    beforeEnter: needAuth
+  },
+  {
+    path: '/item-edit/:id',
+    name: 'item.edit',
+    component: DashboardItemEditView,
     beforeEnter: needAuth
   },
 ]
