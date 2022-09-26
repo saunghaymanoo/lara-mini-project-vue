@@ -8,6 +8,9 @@ import DashboardView from '../views/DashboardView'
 import DashboardItemCreateView from '../views/DashboardItemCreateView'
 import DashboardItemListView from '../views/DashboardItemListView'
 import DashboardItemEditView from '../views/DashboardItemEditView'
+import DashboardCategoryListView from '../views/DashboardCategoryListView'
+import DashboardCategoryCreateView from '../views/DashboardCategoryCreateView'
+import DashboardCategoryEditView from '../views/DashboardCategoryEditView'
 
 Vue.use(VueRouter)
 function needAuth(to,from,next){
@@ -63,6 +66,24 @@ const routes = [
     path: '/item-edit/:id',
     name: 'item.edit',
     component: DashboardItemEditView,
+    beforeEnter: needAuth
+  },
+  {
+    path: '/category-list',
+    name: 'category.list',
+    component: DashboardCategoryListView,
+    beforeEnter: needAuth
+  },
+  {
+    path: '/category-create',
+    name: 'category.create',
+    component: DashboardCategoryCreateView,
+    beforeEnter: needAuth
+  },
+  {
+    path: '/category-edit/:id',
+    name: 'category.edit',
+    component: DashboardCategoryEditView,
     beforeEnter: needAuth
   },
 ]

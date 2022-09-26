@@ -19,7 +19,7 @@
     export default {
         data() {
             return {
-                selectedCategory: '0',
+                // selectedCategory: '0',
                 // selectedSubCategory :'0',
             }
         },
@@ -31,6 +31,9 @@
                 default : ''
             },
             errors:{
+            },
+            selectedCategory: {
+                default : '0'
             }
         },
         methods: {

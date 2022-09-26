@@ -28,7 +28,7 @@
 
             <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Items Management</h6>
-                </li>
+            </li>
             <li class="nav-item">
             <router-link class="nav-link text-white " to="/item-create">
                 
@@ -60,28 +60,31 @@
             </router-link>
             </li>
 
-            
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Categories Management</h6>
+            </li>
             <li class="nav-item">
-            <a class="nav-link text-white " href="./virtual-reality.html">
+            <router-link class="nav-link text-white " to="/category-list">
                 
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                     <i class="material-icons opacity-10">view_in_ar</i>
                 </div>
                 
-                <span class="nav-link-text ms-1">Virtual Reality</span>
-            </a>
+                <span class="nav-link-text ms-1">Category List</span>
+            </router-link>
             </li>
 
             
             <li class="nav-item">
-            <a class="nav-link text-white " href="./rtl.html">
+            <router-link class="nav-link text-white " to="/category-create">
                 
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                    <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
+                    <i class="material-icons opacity-10">library_add</i>
+                    <!-- <i class="material-icons opacity-10">format_textdirection_r_to_l</i> -->
                 </div>
                 
-                <span class="nav-link-text ms-1">RTL</span>
-            </a>
+                <span class="nav-link-text ms-1">Category Create</span>
+            </router-link>
             </li>
 
             
@@ -154,8 +157,9 @@
     }
 </script>
 
-<style lang="scss" scoped>
-$primary:coral;
+<style scoped >
+/* $primary:coral; */
+
     @import '@/assets/css/material-dashboard.css';
     @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700');
     @import url('https://fonts.googleapis.com/icon?family=Material+Icons+Round');

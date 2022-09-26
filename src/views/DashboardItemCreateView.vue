@@ -7,7 +7,7 @@
         <div class="min-vh-100 mx-4">
             <div class="card w-md-75">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-between mb-4">
                         <h3>Create Item</h3>
                         <router-link to="/item-list">
                             <i class="bi bi-list" style="font-size:32px;"></i>
@@ -24,11 +24,11 @@
                             <div class="row">
                                 <div class="col-6">
                                     <label for="category" class="form-label">Category: </label>
-                                    <Select :categories="categories" @changeSubcategory="fetchSubcategories" :errors="errors"/>
+                                    <Select :categories="categories" @changeSubcategory="fetchSubcategories" :errors="errors" :selectedCategory="0"/>
                                 </div>
                                 <div class="col-6">
                                      <label for="subcategory" class="form-label">SubCategory: </label>
-                                        <Select :categories="subcategories" @changeSubcategory="getSubcategory" name="subcategory_id" :errors="errors"/>
+                                        <Select :categories="subcategories" @changeSubcategory="getSubcategory" name="subcategory_id" :errors="errors" :selectedCategory="0"/>
                                 </div>
                             </div>
                             <div class="row my-4">
@@ -62,6 +62,7 @@ import DashboardFooter from '@/components/DashboardFooter.vue'
 import Input from '@/components/Input.vue'
 import Select from '@/components/Select.vue'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 import { mapGetters } from 'vuex'
     export default {
         components: { DashboardAside, DashboardNav, DashboardFooter, Input, Select, },

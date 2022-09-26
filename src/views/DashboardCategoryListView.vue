@@ -12,41 +12,26 @@
                     </div>
                 </div>
             </div>
-            <div class="card overflow-scroll" v-else>
+            <div class="card w-lg-75 overflow-scroll" v-else>
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-4">
-                        <h3>Item List</h3>
-                        <router-link to="/dashboard">
+                        <h3>Category List</h3>
+                        <router-link to="/category-create">
                             <i class="bi bi-plus-circle-dotted" style="font-size:32px;"></i>
                         </router-link>
                     </div>
                     <table class="table table-striped text-end align-middle">
                     <thead>
                         <th>#</th>
-                        <th>Item Name</th>
-                        <th>Code</th>
-                        <th>Subcategory</th>
+                        <th>title</th>
                         <th>Owner</th>
-                        <th>Description</th>
-                        <th>Price</th>
-                        <th>Discount</th>
-                        <th>Photo</th>
                         <th>Control</th>
                     </thead>
                     <tbody>
-                        <tr v-for="row in rows.data" :key="row.id">
+                        <tr v-for="row in categories" :key="row.id">
                             <td>{{row.id}}</td>
-                            <td>{{row.name}}</td>
-                            <td>{{row.code}}</td>
-                            <td>{{row.subcategory.title}}</td>
-                            <td>{{row.owner}}</td>
-                            <td>{{row.description.substr(0,50)+"..."}}</td>
-                            <td>{{row.price}}</td>
-                            <td v-if="row.discount!=null">{{row.discount}}</td>
-                            <td v-else>0</td>
-                            <td> 
-                                <img :src="row.photo" width="50px" height="50px" alt="">
-                            </td>
+                            <td>{{row.title}}</td>
+                            <td>{{row.owner.name}}</td>
                             <td>
                                 <!-- <button 
                                 class="btn btn-sm btn-outline-info ms-2"
@@ -56,23 +41,17 @@
                                 </button> -->
                                 <button 
                                     class="btn btn-sm btn-outline-danger ms-2"
-                                    @click="deleteItem(row.id)"
+                                    @click="deleteCategory(row.id)"
                                 >
                                     <i class="bi bi-trash3" style="font-size:18px;"/>
                                 </button>
-                                <router-link :to="'/item-edit/'+row.id" class="btn btn-sm btn-outline-warning ms-2">
+                                <router-link :to="'/category-edit/'+row.id" class="btn btn-sm btn-outline-warning ms-2">
                                     <i class="bi bi-pencil-square" style="font-size:18px;"/>
                                 </router-link>
                             </td>
                         </tr>
                     </tbody>
                     </table>
-                    <div class="d-flex justify-content-between">
-                        <Pagination v-if="rows.meta" :links="rows.meta.links" @fetchLink = "fetchItems"/>
-                        <div class="w-50">
-                            <Search @search="search" :categories="categories" :subcategories="subcategories"/>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -94,12 +73,10 @@ import { mapGetters } from 'vuex'
         data() {
             return {
                 errors: {},
-                rows: [],
                 categories: [],
-                subcategories: [],
                 isLoading:false,
                 breadcrumbs: [
-                    'home','item list'
+                    'home','category list'
                     ]
             }
         },
@@ -124,41 +101,30 @@ import { mapGetters } from 'vuex'
                     title: message
                 })
               },
-                fetchItems(url) {
-                this.isLoading = true;
-                axios.get(url)
-                .then(res => {
-                    // console.log(res.data)
-                    this.isItem=true
-                    this.rows = res.data
-                })
-                .catch(err => this.showToast('error',err.message))
-                .finally(_=>this.isLoading=false)
-                },
-                search(keyword,subcategory_id=0){
-                    if(subcategory_id == 0){
-                        this.fetchItems(this.getUrl('/items?keyword='+keyword));
-                    }else{
-                        this.fetchItems(this.getUrl('/itembysubcategory?keyword='+keyword+"&&subcategory_id="+subcategory_id))
+               fetchCategories(){
+                axios.get(this.getUrl('/categories'))
+                .then(res=>{
+                    if(res.data.success == true){ 
+                    // console.log(res.data);
+                        this.categories = res.data.categories;
                     }
+                })
+                .catch(err => console.log(err));
                 },
-                deleteItem(id){
-                    axios.delete(this.getUrl('/items/'+id))
-                    .then(res=>{
-                        // console.log(res);
+                deleteCategory(id){
+                    axios.delete(this.getUrl('/categories/'+id))
+                    .then(res => {
+                        //  console.log(res);
                         if(res.data.success == true){
+                            this.fetchCategories()
                             this.showToast('success',res.data.message)
-                            this.fetchItems(this.rows.meta.links.find(link => link.active === true).url)
                         }
-                    })
-                    .catch(err=>{
-                        // console.log(err)
-                        this.showToast('error',err.response.data.message)
-                    })
+                    }).catch(err => this.showToast('error',err.response.data.message))
                 }
+                
         },
         mounted () {
-        this.fetchItems(this.getUrl('/items'));
+            this.fetchCategories();
         },
     }
 </script>

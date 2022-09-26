@@ -62,6 +62,7 @@ import { mapGetters } from 'vuex'
 </script>
 
 <style lang="scss" scoped>
+@import "bootstrap/scss/bootstrap.scss";
         .product{
             border:none !important;
         }
