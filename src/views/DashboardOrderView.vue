@@ -15,38 +15,24 @@
             <div class="card overflow-scroll" v-else>
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-4">
-                        <h3>Item List</h3>
-                        <router-link to="/dashboard">
-                            <i class="bi bi-plus-circle-dotted" style="font-size:32px;"></i>
-                        </router-link>
+                        <h3>Order List</h3>
                     </div>
                     <table class="table table-striped text-end align-middle">
                     <thead>
                         <th>#</th>
-                        <th>Item Name</th>
-                        <th>Code</th>
-                        <th>Subcategory</th>
                         <th>Owner</th>
-                        <th>Description</th>
-                        <th>Price</th>
-                        <th>Discount</th>
-                        <th>Photo</th>
+                        <th>Item Name</th>
+                        <th>Stock</th>
+                        <th>Amount</th>
                         <th>Control</th>
                     </thead>
                     <tbody>
                         <tr v-for="row in rows.data" :key="row.id">
                             <td>{{row.id}}</td>
-                            <td>{{row.name}}</td>
-                            <td>{{row.code}}</td>
-                            <td>{{row.subcategory.title}}</td>
                             <td>{{row.owner}}</td>
-                            <td>{{row.description.substr(0,50)+"..."}}</td>
-                            <td>{{row.price}}</td>
-                            <td v-if="row.discount!=null">{{row.discount}}</td>
-                            <td v-else>0</td>
-                            <td> 
-                                <img :src="row.photo" width="50px" height="50px" alt="">
-                            </td>
+                            <td>{{row.item.name}}</td>
+                            <td>{{row.stock}}</td>
+                            <td>{{row.amount}}</td>
                             <td>
                                 <!-- <button 
                                 class="btn btn-sm btn-outline-info ms-2"
@@ -67,10 +53,19 @@
                         </tr>
                     </tbody>
                     </table>
-                    <div class="d-flex justify-content-between">
-                        <Pagination v-if="rows.meta" :links="rows.meta.links" @fetchLink = "fetchItems"/>
-                        <div class="w-50">
-                            <Search @search="search" :categories="categories" :subcategories="subcategories"/>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <Pagination v-if="rows.meta" :links="rows.meta.links" @fetchLink = "fetchOrders"/>
+                        <div class="w-50 d-flex align-items-baseline justify-content-between">
+                            <label for="">Start Date:</label>
+                            <input v-model="startDate" type="date" name="startDate" class="form-control w-25 mx-2">
+                            <label for="">End Date:</label>
+                            <input v-model="endDate" type="date" name="endDate" class="form-control w-25 mx-2">
+                            <button
+                                class="btn btn-primary"
+                                @click="searchByDate"
+                            >
+                                Search
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -85,12 +80,11 @@ import DashboardAside from '@/components/DashboardAside.vue'
 import DashboardNav from '@/components/DashboardNav.vue'
 import DashboardFooter from '@/components/DashboardFooter.vue'
 import Pagination from '@/components/Pagination.vue'
-import Search from '@/components/Search.vue'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { mapGetters, mapState } from 'vuex'
     export default {
-        components: { DashboardAside, DashboardNav, DashboardFooter, Pagination, Search },
+        components: { DashboardAside, DashboardNav, DashboardFooter, Pagination, },
         data() {
             return {
                 errors: {},
@@ -98,14 +92,16 @@ import { mapGetters, mapState } from 'vuex'
                 categories: [],
                 subcategories: [],
                 isLoading:false,
+                startDate: '',
+                endDate: new Date().getFullYear()+'-'+(new Date().getMonth()+1 )+'-'+new Date().getDate(),
                 breadcrumbs: [
-                    'home','item list'
+                    'home','order list'
                     ]
             }
+           
         },
         computed: {
            ...mapGetters(['getUrl']),
-           ...mapState(['token'])
         },
         methods: {
             showToast(icon,message){
@@ -125,45 +121,36 @@ import { mapGetters, mapState } from 'vuex'
                     title: message
                 })
               },
-                async fetchItems(url) {
+                async fetchOrders(url) {
                     this.isLoading = true;
                     await axios.get(url)
                     .then(res => {
                         // console.log(res.data)
-                        this.isItem=true
                         this.rows = res.data
                     })
                     .catch(err => this.showToast('error',err.message))
                     .finally(_=>this.isLoading=false)
                 },
-                search(keyword,subcategory_id=0){
-                    if(subcategory_id == 0){
-                        this.fetchItems(this.getUrl('/items?keyword='+keyword));
-                    }else{
-                        this.fetchItems(this.getUrl('/itembysubcategory?keyword='+keyword+"&&subcategory_id="+subcategory_id))
-                    }
-                },
-                deleteItem(id){
-                    axios.delete(this.getUrl('/items/'+id))
+                deleteOrder(id){
+                    axios.delete(this.getUrl('/orders/'+id))
                     .then(res=>{
                         // console.log(res);
                         if(res.data.success == true){
                             this.showToast('success',res.data.message)
-                            this.fetchItems(this.rows.meta.links.find(link => link.active === true).url)
+                            this.fetchOrders(this.rows.meta.links.find(link => link.active === true).url)
                         }
                     })
                     .catch(err=>{
                         // console.log(err)
                         this.showToast('error',err.response.data.message)
                     })
+                },
+                searchByDate(){
+                    this.fetchOrders(this.getUrl('/orders/?startDate='+this.startDate+'&&endDate='+this.endDate));
                 }
         },
         mounted () {
-            //   if(this.token == null)
-            // {
-            //     this.$router.push('/');
-            // }
-            this.fetchItems(this.getUrl('/items'));
+            this.fetchOrders(this.getUrl('/orders'));
         },
         created(){
            

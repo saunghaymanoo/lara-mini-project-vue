@@ -24,11 +24,11 @@
                             <div class="row">
                                 <div class="col-6">
                                     <label for="category" class="form-label">Category: </label>
-                                    <Select :categories="categories" @changeSubcategory="fetchSubcategories" :errors="errors" :selectedCategory="0"/>
+                                    <Select :categories="categories" @changeSubcategory="fetchSubcategories" :errors="errors"/>
                                 </div>
                                 <div class="col-6">
                                      <label for="subcategory" class="form-label">SubCategory: </label>
-                                        <Select :categories="subcategories" @changeSubcategory="getSubcategory" name="subcategory_id" :errors="errors" :selectedCategory="0"/>
+                                        <Select :categories="subcategories" @changeSubcategory="getSubcategory" name="subcategory_id" :errors="errors"/>
                                 </div>
                             </div>
                             <div class="row my-4">
@@ -63,7 +63,7 @@ import Input from '@/components/Input.vue'
 import Select from '@/components/Select.vue'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import { mapGetters } from 'vuex'
+import { mapGetters,mapState } from 'vuex'
     export default {
         components: { DashboardAside, DashboardNav, DashboardFooter, Input, Select, },
         data() {
@@ -78,7 +78,9 @@ import { mapGetters } from 'vuex'
             }
         },
         computed: {
-           ...mapGetters(['getUrl'])
+           ...mapGetters(['getUrl']),
+           ...mapState(['token'])
+
         },
         methods: {
             showToast(icon,message){
@@ -109,6 +111,7 @@ import { mapGetters } from 'vuex'
                 .catch(err => console.log(err));
             },
             fetchSubcategories(category_id){
+                console.log(category_id);
                 axios.get(this.getUrl('/subcategorybycategory/')+category_id)
                 .then(res => {
                     if(res.data.success == true){ 
@@ -145,6 +148,9 @@ import { mapGetters } from 'vuex'
             }
         },
         mounted () {
+            // if(this.token == null){
+            //     this.$router.push('/');
+            // }
             this.fetchCategories();
             this.fetchSubcategories();
         },

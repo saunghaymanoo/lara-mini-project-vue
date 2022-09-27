@@ -27,8 +27,9 @@
         <!-- <li class="nav-item d-flex align-items-center"> -->
         <!-- <ul class="navbar-nav ms-auto mb-2 mb-lg-0" v-if="auth.name != null"> -->
                 <li class="nav-item dropdown">
-                <router-link class="nav-link dropdown-toggle" to="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    {{auth.name}}
+                <router-link class="nav-link dropdown-toggle d-flex align-items-center" to="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="material-icons opacity-10">manage_accounts</i>
+                    <span v-if="auth">{{auth.name}}</span>
                 </router-link>
                 <ul class="dropdown-menu">
                     <li><router-link class="dropdown-item" to="/dashboard">Dashboard</router-link></li>

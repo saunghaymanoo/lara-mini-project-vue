@@ -67,7 +67,7 @@ import Pagination from '@/components/Pagination.vue'
 import Search from '@/components/Search.vue'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
     export default {
         components: { DashboardAside, DashboardNav, DashboardFooter, Pagination, Search },
         data() {
@@ -81,7 +81,8 @@ import { mapGetters } from 'vuex'
             }
         },
         computed: {
-           ...mapGetters(['getUrl'])
+           ...mapGetters(['getUrl']),
+           ...mapState(['token'])
         },
         methods: {
             showToast(icon,message){
@@ -124,6 +125,9 @@ import { mapGetters } from 'vuex'
                 
         },
         mounted () {
+            // if(this.token == null){
+            //     this.$router.push('/');
+            // }
             this.fetchCategories();
         },
     }

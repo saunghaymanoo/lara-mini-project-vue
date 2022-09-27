@@ -40,7 +40,7 @@
     import axios from 'axios'
     import Swal from 'sweetalert2'
     import Input from '@/components/Input.vue'
-    import { mapGetters } from 'vuex'
+    import { mapGetters, mapState } from 'vuex'
     export default {
         components: { DashboardAside, DashboardNav, DashboardFooter, Pagination, Search, Input },
         data() {
@@ -54,7 +54,9 @@
             }
         },
         computed: {
-           ...mapGetters(['getUrl'])
+           ...mapGetters(['getUrl']),
+           ...mapState(['token'])
+
         },
         methods: {
             showToast(icon,message){
@@ -101,6 +103,11 @@
                 })
             }
         },
+        mounted(){
+            // if(this.token == null){
+            //     this.$router.push('/');
+            // }
+        }
     }
 </script>
 

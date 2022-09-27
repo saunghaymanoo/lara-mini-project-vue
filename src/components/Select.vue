@@ -1,6 +1,6 @@
 <template>
     <div>
-        <select :name="name" class="form-select" v-model="selectedCategory" aria-label="Default select example" @change="changeSubcategory">
+        <select :name="name" class="form-select" v-model="selectedCategoryId" aria-label="Default select example" @change="changeSubcategory">
             <option value="0">Select Category</option>
             <option 
                 v-for="category in categories" 
@@ -19,7 +19,7 @@
     export default {
         data() {
             return {
-                // selectedCategory: '0',
+                selectedCategoryId: this.selectedCategory,
                 // selectedSubCategory :'0',
             }
         },
@@ -38,7 +38,7 @@
         },
         methods: {
             changeSubcategory() {
-                this.$emit('changeSubcategory',this.selectedCategory);
+                this.$emit('changeSubcategory',this.selectedCategoryId);
             },
         },
     }

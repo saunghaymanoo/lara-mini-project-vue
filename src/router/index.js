@@ -11,14 +11,26 @@ import DashboardItemEditView from '../views/DashboardItemEditView'
 import DashboardCategoryListView from '../views/DashboardCategoryListView'
 import DashboardCategoryCreateView from '../views/DashboardCategoryCreateView'
 import DashboardCategoryEditView from '../views/DashboardCategoryEditView'
+import DashboardSubcategoryListView from '../views/DashboardSubcategoryListView'
+import DashboardSubcategoryCreateView from '../views/DashboardSubcategoryCreateView'
+import DashboardSubcategoryEditView from '../views/DashboardSubcategoryEditView'
+import DashboardOrderView from '../views/DashboardOrderView'
+import DashboardUserListView from '../views/DashboardUserListView'
 
 Vue.use(VueRouter)
 function needAuth(to,from,next){
-  if(localStorage.getItem('token') === null){
-    return next('/login')
+  if(store.state.token == null){
+    return next('/')
   }
   return next();
 }
+// router.beforeEach((to,from,next) => {
+//   if(to.path != '/' && store.state.token == null){
+//     router.push('/login')
+//   }else{
+//     return next();
+//   }
+// })
 const routes = [
   {
     path: '/',
@@ -60,7 +72,8 @@ const routes = [
     path: '/item-list',
     name: 'item.list',
     component: DashboardItemListView,
-    beforeEnter: needAuth
+    beforeEnter: needAuth,
+    beforeRouteEnter: needAuth,
   },
   {
     path: '/item-edit/:id',
@@ -84,6 +97,36 @@ const routes = [
     path: '/category-edit/:id',
     name: 'category.edit',
     component: DashboardCategoryEditView,
+    beforeEnter: needAuth
+  },
+  {
+    path: '/subcategory-list/',
+    name: 'subcategory.list',
+    component: DashboardSubcategoryListView,
+    beforeEnter: needAuth
+  },
+  {
+    path: '/subcategory-create/',
+    name: 'subcategory.create',
+    component: DashboardSubcategoryCreateView,
+    beforeEnter: needAuth
+  },
+  {
+    path: '/subcategory-edit/:id',
+    name: 'subcategory.edit',
+    component: DashboardSubcategoryEditView,
+    beforeEnter: needAuth
+  },
+  {
+    path: '/order',
+    name: 'order',
+    component: DashboardOrderView,
+    beforeEnter: needAuth
+  },
+  {
+    path: '/user-list',
+    name: 'user.list',
+    component: DashboardUserListView,
     beforeEnter: needAuth
   },
 ]

@@ -24,11 +24,11 @@
                             <div class="row">
                                 <div class="col-6">
                                     <label for="category" class="form-label">Category: </label>
-                                    <Select :categories="categories" @changeSubcategory="fetchSubcategories" :errors="errors" :selectedCategory="0"/>
+                                    <Select :categories="categories" @changeSubcategory="fetchSubcategories" :errors="errors"/>
                                 </div>
                                 <div class="col-6">
                                      <label for="subcategory" class="form-label">SubCategory: </label>
-                                        <Select :categories="allsubcategories" @changeSubcategory="getSubcategory" name="subcategory_id" :errors="errors" v-if="item.subcategory" :selectedCategory="item.subcategory.id"/>
+                                        <Select :categories="subcategories" @changeSubcategory="getSubcategory" name="subcategory_id" :errors="errors" v-if="item.subcategory" :selectedCategory="item.subcategory.id"/>
                                 </div>
                             </div>
                             <div class="row my-4">
@@ -64,7 +64,7 @@ import Input from '@/components/Input.vue'
 import Select from '@/components/Select.vue'
 import Swal from 'sweetalert2'
 import axios from 'axios'
-import { mapGetters } from 'vuex'
+import { mapGetters,mapState } from 'vuex'
     export default {
         components: { DashboardAside, DashboardNav, DashboardFooter, Input, Select, },
         data() {
@@ -81,7 +81,8 @@ import { mapGetters } from 'vuex'
             }
         },
         computed: {
-           ...mapGetters(['getUrl'])
+           ...mapGetters(['getUrl']),
+           ...mapState(['token'])
         },
         methods: {
             showToast(icon,message){
@@ -115,7 +116,7 @@ import { mapGetters } from 'vuex'
                 axios.get(this.getUrl('/subcategories'))
                 .then(res=>{
                     // console.log(res.data);
-                    this.allsubcategories = res.data.subcategories;
+                    this.subcategories = res.data.subcategories;
                 })
                 .catch(err => console.log(err))
             },
@@ -166,6 +167,9 @@ import { mapGetters } from 'vuex'
             }
         },
         mounted () {
+            // if(this.token == null){
+            //     this.$router.push('/');
+            // }
             this.fetchCategories();
             this.fetchSubcategories();
             this.fetchAllSubcategories();
