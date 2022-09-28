@@ -25,14 +25,13 @@
                         <th>#</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Role</th>
                         <th>Control</th>
                     </thead>
                     <tbody>
-                        <tr v-for="(row,index) in rows.data" :key="row.id">
+                        <tr v-if="row">
                             <td>
                                 <span>
-                                    {{index+1}}
+                                    1
                                 </span>
                             </td>
                             <td>
@@ -50,43 +49,23 @@
                                 </span>
                             </td>
                             <td>
-                                <!-- <label for="" v-if="isEdit && isEditId == row.id"></label> -->
-                                <select name="role" class="form-control" v-model="editRow.role" v-if="isEdit && isEditId == row.id">
-                                    <option :value="r" v-for="r in roles" :key="r">{{r}}</option>
-                                </select>
-                                <span v-else>
-                                    {{row.role}}
-                                </span>
-                            </td>
-                            <td>
-                                <!-- <button 
-                                class="btn btn-sm btn-outline-info ms-2"
-                                 @click="fetchItem(row.id)"
-                                 >
-                                    <i class="bi bi-info" style="font-size:18px;"/>
-                                </button> -->
-                                <button 
-                                    class="btn btn-sm btn-outline-danger ms-2"
-                                    @click="deleteUser(row.id)"
-                                >
-                                    <i class="bi bi-trash3" style="font-size:18px;"/>
-                                </button>
+                                
                                 <button @click="updateUser(row.id)" class="btn btn-sm btn-outline-info ms-2" v-if="isEdit && isEditId == row.id">
                                    <i class="bi bi-save2-fill" style="font-size:18px;"></i>
                                 </button>
                                 <button @click="editUser(row.id)" class="btn btn-sm btn-outline-warning ms-2" v-else>
                                     <i class="bi bi-pencil-square" style="font-size:18px;"/>
                                 </button>
+                                <router-link 
+                                class="btn btn-sm btn-outline-info ms-2"
+                                 to="/change-password"
+                                 >
+                                    <i class="bi bi-lock" style="font-size:18px;"/>Change Password
+                                </router-link>
                             </td>
                         </tr>
                     </tbody>
                     </table>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <Pagination v-if="rows.meta" :links="rows.meta.links" @fetchLink = "fetchUsers"/>
-                        <div class="w-50 d-flex align-items-baseline justify-content-between">
-                            
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -109,11 +88,8 @@ import Select from '@/components/Select.vue'
         data() {
             return {
                 errors: {},
-                rows: [],
-                roles: ['admin','editor','author'],
+                row: [],
                 editRow : {},
-                categories: [],
-                subcategories: [],
                 isLoading:false,
                 isEdit : false,
                 isEditId : '',
@@ -125,6 +101,7 @@ import Select from '@/components/Select.vue'
         },
         computed: {
            ...mapGetters(['getUrl']),
+           ...mapState(['auth'])
         },
         methods: {
             showToast(icon,message){
@@ -144,29 +121,15 @@ import Select from '@/components/Select.vue'
                     title: message
                 })
               },
-                async fetchUsers(url) {
+                async fetchUser(url) {
                     this.isLoading = true;
                     await axios.get(url)
                     .then(res => {
                         // console.log(res.data)
-                        this.rows = res.data
+                        this.row = res.data.data
                     })
                     .catch(err => this.showToast('error',err.message))
                     .finally(_=>this.isLoading=false)
-                },
-                deleteUser(id){
-                    axios.delete(this.getUrl('/users/'+id))
-                    .then(res=>{
-                        // console.log(res);
-                        if(res.data.success == true){
-                            this.showToast('success',res.data.message)
-                            this.fetchUsers(this.rows.meta.links.find(link => link.active === true).url)
-                        }
-                    })
-                    .catch(err=>{
-                        // console.log(err)
-                        this.showToast('error',err.response.data.message)
-                    })
                 },
                 editUser(id){
                     this.isEdit = true;
@@ -189,7 +152,7 @@ import Select from '@/components/Select.vue'
                         console.log(res);
                         this.isEdit = false;
                         this.showToast('success',res.data.message)
-                        this.fetchUsers(this.rows.meta.links.find(link => link.active === true).url)
+                        this.fetchUser(this.getUrl('/users/'+this.auth.id))
                     })
                     .catch(err => {
                         this.showToast('error',err.response.data.message)
@@ -197,7 +160,7 @@ import Select from '@/components/Select.vue'
                 }
         },
         mounted () {
-            this.fetchUsers(this.getUrl('/users'));
+            this.fetchUser(this.getUrl('/users/'+this.auth.id));
         },
         created(){
            

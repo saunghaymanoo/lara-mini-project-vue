@@ -16,6 +16,9 @@ import DashboardSubcategoryCreateView from '../views/DashboardSubcategoryCreateV
 import DashboardSubcategoryEditView from '../views/DashboardSubcategoryEditView'
 import DashboardOrderView from '../views/DashboardOrderView'
 import DashboardUserListView from '../views/DashboardUserListView'
+import DashboardUserCreateView from '../views/DashboardUserCreateView'
+import DashboardUserShowView from '../views/DashboardUserShowView'
+import DashboardChangePasswordView from '../views/DashboardChangePasswordView'
 
 Vue.use(VueRouter)
 function needAuth(to,from,next){
@@ -23,6 +26,15 @@ function needAuth(to,from,next){
     return next('/')
   }
   return next();
+}
+function needAdmin(to,from,next){
+  if(store.state.auth == null){
+    return next('/')
+  }else if(store.state.auth.role != 'admin'){
+    return next('/login')
+  }else{
+    return next();
+  }
 }
 // router.beforeEach((to,from,next) => {
 //   if(to.path != '/' && store.state.token == null){
@@ -127,6 +139,24 @@ const routes = [
     path: '/user-list',
     name: 'user.list',
     component: DashboardUserListView,
+    beforeEnter: needAdmin
+  },
+  {
+    path: '/user-create',
+    name: 'user.create',
+    component: DashboardUserCreateView,
+    beforeEnter: needAdmin
+  },
+  {
+    path: '/user-show',
+    name: 'user.show',
+    component: DashboardUserShowView,
+    beforeEnter: needAuth
+  },
+  {
+    path: '/change-password',
+    name: 'change-password',
+    component: DashboardChangePasswordView,
     beforeEnter: needAuth
   },
 ]

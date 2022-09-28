@@ -10,30 +10,23 @@
                     <div class="d-flex justify-content-between mb-4">
                         <h3>
                             <i class="bi bi-person-plus-fill" style="font-size:32px;"></i>
-                            New User
+                           Change Password
                         </h3>
-                        <router-link to="/user-list">
+                        <!-- <router-link to="/user-list">
                             <i class="bi bi-list" style="font-size:32px;"></i>
-                        </router-link>
+                        </router-link> -->
                     </div>
-                    <form @submit.prevent="storeUser" ref="createUserForm" class="">
+                    <form @submit.prevent="changePassword(auth.id)" ref="changePasswordForm" class="">
                         <div class="row">
                             <div class="col-12">
-                                <Input name="name" type="name" placeholder="Enter Name ..." :isLogin="false" :errors="errors"/>
+                                <input type="hidden" name="user_id" :value="auth.id">
+                                <Input label="Old Password" name="old_password" type="password" placeholder="" :isLogin="false" :errors="errors"/>
                                 <br>
-                                <Input name="email" type="email" placeholder="Enter Email ..." :isLogin="false" :errors="errors"/>
+                                <Input label="New Password" name="password" type="password" placeholder="" :isLogin="false" :errors="errors"/>
                                 <br>
-                                <select name="role" class="form-control mt-2 mb-0">
-                                    <option selected disabled value="" class="text-black-50">Choose User Role</option>
-                                    <option :value="r" v-for="r in roles" :key="r">{{r}}</option>
-                                </select>
-                                <br>
-                                <Input name="password" type="password" placeholder="Enter Password ..." :isLogin="false" :errors="errors"/>
-                                <br>
-                                <Input name="password_confirmation" type="password" placeholder="Confirm Password ..." :isLogin="false" :errors="errors"/>
-                                <br>
-                                <div class="">
-                                    <input type="submit" name="btn" value="Add" class="btn btn-primary ms-auto">
+                                <Input label="Confirm Password" name="password_confirmation" type="password" placeholder="" :isLogin="false" :errors="errors"/>
+                                <div class="mt-4">
+                                    <input type="submit" name="btn" value="Change Password" class="btn btn-primary ms-auto">
                                 </div>
                             </div>
                         </div>
@@ -64,15 +57,14 @@
             return {
                 errors: {},
                 isLoading:false,
-                roles: ['admin','editor','author'],
                 breadcrumbs: [
-                    'home','user create'
+                    'home','password change'
                     ]
             }
         },
         computed: {
            ...mapGetters(['getUrl']),
-           ...mapState(['token'])
+           ...mapState(['token','auth'])
 
         },
         methods: {
@@ -93,21 +85,21 @@
                     title: message
                 })
               },
-            storeUser() {
-                let formData = new FormData(this.$refs.createUserForm);
-                axios.post(this.getUrl('/users'),formData)
-                .then(res => {
-                    if(res.data.success == true){
-                        this.errors = {};
-                        this.$refs.createUserForm.reset();
-                        this.showToast('success',res.data.message)
-                    }
-                })
-                .catch(err => {
-                    // console.log(err);
-                    this.errors=err.response.data.errors;
-                    this.showToast('error',err.response.data.message)
-                })
+            changePassword(id) {
+                    let formData = new FormData(this.$refs.changePasswordForm);
+                    axios.put(this.getUrl('/changepassword/'+id),new URLSearchParams(formData).toString()).then(res => {
+                        console.log(res);
+                        this.showToast('error',res.data.message)
+
+                        if(res.data.success==true){
+                            this.showToast('success',res.data.message)
+                            this.$refs.changePasswordForm.reset();
+                        }
+                        
+                    })
+                    .catch(err => {
+                        this.showToast('error',err.response.data.message)
+                    })
             }
         },
         mounted(){
