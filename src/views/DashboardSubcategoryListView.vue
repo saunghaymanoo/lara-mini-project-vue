@@ -85,6 +85,7 @@ import { mapGetters, mapState } from 'vuex'
         },
         computed: {
            ...mapGetters(['getUrl']),
+           ...mapState(['auth'])
         },
         methods: {
             showToast(icon,message){
@@ -128,9 +129,9 @@ import { mapGetters, mapState } from 'vuex'
         },
         mounted () {
             if(this.auth.role == 'author'){
-                this.fetchCategories(this.getUrl('/subcategoriesbyauthor'));
+                this.fetchSubcategories(this.getUrl('/subcategoriesbyauthor'));
             }else{
-                this.fetchCategories(this.getUrl('/subcategories'));
+                this.fetchSubcategories(this.getUrl('/subcategories'));
             }
         },
     }
