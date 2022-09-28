@@ -133,7 +133,7 @@ const routes = [
     path: '/order',
     name: 'order',
     component: DashboardOrderView,
-    beforeEnter: needAuth
+    beforeEnter: needAdmin
   },
   {
     path: '/user-list',

@@ -29,7 +29,8 @@
                         <th>Control</th>
                     </thead>
                     <tbody>
-                        <tr v-for="row in subcategories" :key="row.id">
+                        <tr v-if="subcategories.length == 0" class="text-center"><td colspan="5">There is no subcategory</td></tr>
+                        <tr v-else v-for="row in subcategories" :key="row.id">
                             <td>{{row.id}}</td>
                             <td>{{row.title}}</td>
                             <td>{{row.owner.name}}</td>
@@ -103,8 +104,8 @@ import { mapGetters, mapState } from 'vuex'
                     title: message
                 })
               },
-               fetchSubcategories(){
-                axios.get(this.getUrl('/subcategories'))
+               fetchSubcategories(url){
+                axios.get(url)
                 .then(res=>{
                     if(res.data.success == true){ 
                     // console.log(res.data);
@@ -126,7 +127,11 @@ import { mapGetters, mapState } from 'vuex'
                 
         },
         mounted () {
-            this.fetchSubcategories();
+            if(this.auth.role == 'author'){
+                this.fetchCategories(this.getUrl('/subcategoriesbyauthor'));
+            }else{
+                this.fetchCategories(this.getUrl('/subcategories'));
+            }
         },
     }
 </script>

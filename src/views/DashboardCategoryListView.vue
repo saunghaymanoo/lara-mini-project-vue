@@ -28,7 +28,8 @@
                         <th>Control</th>
                     </thead>
                     <tbody>
-                        <tr v-for="row in categories" :key="row.id">
+                        <tr v-if="categories.length == 0" class="text-center"><td colspan="5">There is no category</td></tr>
+                        <tr v-else v-for="row in categories" :key="row.id">
                             <td>{{row.id}}</td>
                             <td>{{row.title}}</td>
                             <td>{{row.owner.name}}</td>
@@ -82,7 +83,7 @@ import { mapGetters, mapState } from 'vuex'
         },
         computed: {
            ...mapGetters(['getUrl']),
-           ...mapState(['token'])
+           ...mapState(['token','auth'])
         },
         methods: {
             showToast(icon,message){
@@ -102,8 +103,8 @@ import { mapGetters, mapState } from 'vuex'
                     title: message
                 })
               },
-               fetchCategories(){
-                axios.get(this.getUrl('/categories'))
+               fetchCategories(url){
+                axios.get(url)
                 .then(res=>{
                     if(res.data.success == true){ 
                     // console.log(res.data);
@@ -128,7 +129,11 @@ import { mapGetters, mapState } from 'vuex'
             // if(this.token == null){
             //     this.$router.push('/');
             // }
-            this.fetchCategories();
+            if(this.auth.role == 'author'){
+                this.fetchCategories(this.getUrl('/categoriesbyauthor'));
+            }else{
+                this.fetchCategories(this.getUrl('/categories'));
+            }
         },
     }
 </script>

@@ -34,7 +34,8 @@
                         <th>Control</th>
                     </thead>
                     <tbody>
-                        <tr v-for="row in rows.data" :key="row.id">
+                        <tr v-if="rows.length == 0" class="text-center"><td colspan="10">There is no item</td></tr>
+                        <tr v-else v-for="row in rows.data" :key="row.id">
                             <td>{{row.id}}</td>
                             <td>{{row.name}}</td>
                             <td>{{row.code}}</td>
@@ -105,7 +106,7 @@ import { mapGetters, mapState } from 'vuex'
         },
         computed: {
            ...mapGetters(['getUrl']),
-           ...mapState(['token'])
+           ...mapState(['token','auth'])
         },
         methods: {
             showToast(icon,message){
@@ -138,7 +139,11 @@ import { mapGetters, mapState } from 'vuex'
                 },
                 search(keyword,subcategory_id=0){
                     if(subcategory_id == 0){
-                        this.fetchItems(this.getUrl('/items?keyword='+keyword));
+                        if(this.auth.role == 'author'){
+                            this.fetchItems(this.getUrl('/itemsbyauthor?keyword='+keyword))
+                        }else{
+                            this.fetchItems(this.getUrl('/items?keyword='+keyword));
+                        }
                     }else{
                         this.fetchItems(this.getUrl('/itembysubcategory?keyword='+keyword+"&&subcategory_id="+subcategory_id))
                     }
@@ -163,7 +168,11 @@ import { mapGetters, mapState } from 'vuex'
             // {
             //     this.$router.push('/');
             // }
-            this.fetchItems(this.getUrl('/items'));
+            if(this.auth.role == 'author'){
+                this.fetchItems(this.getUrl('/itemsbyauthor'))
+            }else{
+                this.fetchItems(this.getUrl('/items'));
+            }
         },
         created(){
            

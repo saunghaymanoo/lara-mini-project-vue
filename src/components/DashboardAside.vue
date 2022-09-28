@@ -111,10 +111,10 @@
             </router-link>
             </li>
             
-            <li class="nav-item mt-3">
+            <li class="nav-item mt-3" v-if="auth.role == 'admin'">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Order</h6>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="auth.role == 'admin'">
             <router-link class="nav-link text-white " to="/order">
                 
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
