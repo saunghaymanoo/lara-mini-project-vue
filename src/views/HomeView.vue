@@ -172,6 +172,16 @@ export default {
                     if(el.stock>1){
                       el.stock = el.stock -1;
                       el.amount = parseInt(el.price * el.stock);
+                    }else{
+                      el.stock = 1;
+                      el.amount = parseInt(el.price);
+                    }
+                  }else{
+                    if(el.stock>1){
+                      el.amount = parseInt(el.price * el.stock);
+                    }else{
+                      el.stock = 1;
+                      el.amount = parseInt(el.price);
                     }
                   }
                 }

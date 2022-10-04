@@ -13,7 +13,7 @@
                             <i class="bi bi-list" style="font-size:32px;"></i>
                         </router-link>
                     </div>
-                    <form @submit.prevent="updateItem" ref="editItemForm" class="row">
+                    <form @submit.prevent="updateItem" ref="editItemForm" class="row" enctype="multipart/form-data">
                         <div class="col-6">
                             <Input :value="item.name" name="name" type="text" placeholder="" label="Enter Item Name:" :isLogin="false" :errors="errors"/>
                             <Input :value="item.code" name="code" type="text" placeholder="Example: s-0001" label="Enter Item Code:" :isLogin="false" :errors="errors"/>

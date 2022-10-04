@@ -15,7 +15,7 @@
                     <button class="btn btn-outline-primary" @click="changeStock(order.id,'plus')">
                         <i class="bi bi-plus-lg"></i>
                     </button>
-                    <input type="number" name="stock" id="stock" :value="order.stock" class="form-control w-25 mx-2 " min="1">
+                    <input type="number" name="stock" id="stock" @keyup="changeStock(order.id)" v-model="order.stock" class="form-control w-25 mx-2 " min="1">
                     <button class="btn btn-outline-primary" @click="changeStock(order.id,'minus')">
                         <i class="bi bi-dash-lg"></i>
                     </button>
