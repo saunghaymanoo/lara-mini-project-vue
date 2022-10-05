@@ -34,7 +34,7 @@
                         <th>Control</th>
                     </thead>
                     <tbody>
-                        <tr v-if="rows.length == 0" class="text-center"><td colspan="10">There is no item</td></tr>
+                        <tr v-if="!rows.data" class="text-center"><td colspan="10">There is no item</td></tr>
                         <tr v-else v-for="row in rows.data" :key="row.id">
                             <td>{{row.id}}</td>
                             <td>{{row.name}}</td>

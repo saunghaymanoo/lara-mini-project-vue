@@ -46,9 +46,9 @@
                                 >
                                     <i class="bi bi-trash3" style="font-size:18px;"/>
                                 </button>
-                                <router-link :to="'/item-edit/'+row.id" class="btn btn-sm btn-outline-warning ms-2">
+                                <!-- <router-link :to="'/item-edit/'+row.id" class="btn btn-sm btn-outline-warning ms-2">
                                     <i class="bi bi-pencil-square" style="font-size:18px;"/>
-                                </router-link>
+                                </router-link> -->
                             </td>
                         </tr>
                     </tbody>
