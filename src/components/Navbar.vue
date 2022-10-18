@@ -15,7 +15,7 @@
                     {{auth.name}}
                 </router-link>
                 <ul class="dropdown-menu">
-                    <li><router-link class="dropdown-item" to="/item-list">Dashboard</router-link></li>
+                    <li><router-link class="dropdown-item" to="/dashboard">Dashboard</router-link></li>
                     <li><router-link class="dropdown-item" to="#">Another action</router-link></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><button class="dropdown-item" type="button" @click="logout">Logout</button></li>

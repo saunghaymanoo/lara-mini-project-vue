@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './assets/css/material-dashboard.css';
-
+import { Bar } from 'vue-chartjs'
 
 Vue.config.productionTip = false
 
