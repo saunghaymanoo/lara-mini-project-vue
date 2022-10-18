@@ -79,6 +79,7 @@ export default {
                     labels: this.dateArr,
                     datasets: [ 
                         { 
+                            label: 'orders',
                             data: null,
                             backgroundColor: "#d63384"
                         },

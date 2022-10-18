@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <Line
+    :chart-data="chartData"
+  />
 </template>
 
 <script>
