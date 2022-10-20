@@ -118,7 +118,11 @@ import { mapGetters, mapState } from 'vuex'
                     .then(res => {
                         //  console.log(res);
                         if(res.data.success == true){
-                            this.fetchCategories()
+                             if(this.auth.role == 'author'){
+                                this.fetchCategories(this.getUrl('/categoriesbyauthor'));
+                            }else{
+                                this.fetchCategories(this.getUrl('/categories'));
+                            }
                             this.showToast('success',res.data.message)
                         }
                     }).catch(err => this.showToast('error',err.response.data.message))

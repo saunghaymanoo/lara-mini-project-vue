@@ -224,6 +224,7 @@ export default {
               axios.post(this.getUrl('/orders'),payload)
               .then(res => {
                 console.log(res);
+                this.orders = [];
               })
               .catch(err=>{
                 console.log(err)

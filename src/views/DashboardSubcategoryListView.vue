@@ -120,7 +120,11 @@ import { mapGetters, mapState } from 'vuex'
                     .then(res => {
                         //  console.log(res);
                         if(res.data.success == true){
-                            this.fetchSubcategories()
+                             if(this.auth.role == 'author'){
+                                 this.fetchSubcategories(this.getUrl('/subcategoriesbyauthor'));
+                             }else{
+                                 this.fetchSubcategories(this.getUrl('/subcategories'));
+                             }
                             this.showToast('success',res.data.message)
                         }
                     }).catch(err => this.showToast('error',err.response.data.message))

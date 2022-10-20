@@ -27,7 +27,7 @@
                                 </div>
                             </div>
                             <div class="col-2 mt-2">
-                                <button class="btn btn-primary mt-4">Add Category</button>
+                                <button class="btn btn-primary mt-4">Add SubCategory</button>
                             </div>
                         </div>
                     </form>
